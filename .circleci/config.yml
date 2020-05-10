@@ -1,14 +1,35 @@
 version: 2.1
 
 jobs:
-  login_to_docker:
+  react_test:
     docker:
       - image: docker:17.05.0-ce-git
     steps:
+      - checkout
       - setup_remote_docker
+      - run: docker build -t app-testing -f ./client/Dockerfile.dev ./client
+      - run: docker run -e="CI=true" app-testing npm run test
+
+  prod_build:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build -t react-prod ./client
+      - run: docker build -t api-prod ./server
+      - run: docker build -t worker-prod ./worker
+      - run: docker build -t nginx-prod ./nginx
       - run: docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+      - run: docker push react-prod
+      - run: docker push api-prod
+      - run: docker push worker-prod
+      - run: docker push nginx-prod
 
 workflows:
-  checking_docker_flow:
+  complex_shit_flow:
     jobs:
-      - login_to_docker
+      - react_test
+      - prod_build:
+          requires:
+            - react_test

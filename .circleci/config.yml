@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: docker build -f ./client/Dockerfile.dev -t app-testing
+      - run: docker build -t app-testing -f ./client/Dockerfile.dev ./client
       - run: docker run -e="CI=true" app-testing npm run test
 
   prod_build:

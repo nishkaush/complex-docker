@@ -16,15 +16,15 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - docker build -t react-prod ./client
-      - docker build -t api-prod ./server
-      - docker build -t worker-prod ./worker
-      - docker build -t nginx-prod ./nginx
-      - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-      - docker push react-prod
-      - docker push api-prod
-      - docker push worker-prod
-      - docker push nginx-prod
+      - run: docker build -t react-prod ./client
+      - run: docker build -t api-prod ./server
+      - run: docker build -t worker-prod ./worker
+      - run: docker build -t nginx-prod ./nginx
+      - run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      - run: docker push react-prod
+      - run: docker push api-prod
+      - run: docker push worker-prod
+      - run: docker push nginx-prod
 
 workflows:
   complex_shit_flow:

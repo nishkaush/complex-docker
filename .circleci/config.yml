@@ -1,6 +1,15 @@
 version: 2.1
 
 jobs:
+  react_test:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: docker build -t app-testing -f ./client/Dockerfile.dev ./client
+      - run: docker run -e="CI=true" app-testing npm run test
+
   prod_build:
     docker:
       - image: docker:17.05.0-ce-git
@@ -18,6 +27,9 @@ jobs:
       - run: docker push nishkaush/nginx
 
 workflows:
-  complex_flow:
+  complex_shit_flow:
     jobs:
-      - prod_build
+      - react_test
+      - prod_build:
+          requires:
+            - react_test

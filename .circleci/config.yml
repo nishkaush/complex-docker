@@ -20,4 +20,4 @@ jobs:
 workflows:
   complex_flow:
     jobs:
-      - prod_build:
+      - prod_build

@@ -16,7 +16,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - echo BUILDING_SHIT
       - docker build -t react-prod ./client
       - docker build -t api-prod ./server
       - docker build -t worker-prod ./worker
